@@ -9,8 +9,13 @@ vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
--- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
+
+-- Set highlight on serach
+vim.o.hlsearch = true
+
+-- Backspace
+vim.o.backspace = 'indent,eol,start'
 
 -- Make line numbers default
 vim.opt.number = true
@@ -23,6 +28,19 @@ vim.opt.mouse = 'a'
 
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
+
+-- Tabs & indentation
+vim.o.tabstop = 4 -- Amount of Spaces per Tab
+vim.o.shiftwidth = 4 -- Amount of Spaces per indentation
+vim.o.expandtab = true -- Replace TAB with Spaces
+vim.o.autoindent = true
+vim.o.list = true -- Show <TAB> and <EOL>
+
+-- Line wrapping
+vim.o.wrap = false
+
+-- Indicator for line length
+vim.o.colorcolumn = '81'
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
@@ -47,6 +65,7 @@ vim.opt.signcolumn = 'yes'
 
 -- Decrease update time
 vim.opt.updatetime = 250
+vim.opt.timeoutlen = 300
 
 -- Decrease mapped sequence wait time
 -- Displays which-key popup sooner
@@ -71,6 +90,7 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+vim.o.termguicolors = true
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -103,6 +123,8 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+vim.keymap.set('n', 's', '<Nop>') -- Disable due to conflict with surround
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -750,7 +772,23 @@ require('lazy').setup({
     name = 'catpuccin',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
-      require('catppuccin').setup { transparent_background = true }
+      require('catppuccin').setup {
+        transparent_background = true,
+        integrations = {
+          cmp = true,
+          gitsigns = true,
+          fidget = true,
+          mason = true,
+          mini = {
+            enabled = true,
+          },
+          telescope = {
+            enabled = true,
+          },
+          treesitter = true,
+          which_key = true,
+        },
+      }
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
